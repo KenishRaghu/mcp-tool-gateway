@@ -1,0 +1,27 @@
+// Cedar schema for the MCP tool gateway.
+
+entity Role;
+
+// An AI agent. `scopes` = tools its credential is allowed to use at all.
+entity Agent in [Role] {
+  scopes: Set<String>,
+};
+
+// A tool exposed by the gateway (resource id == tool name).
+entity Tool;
+
+// Normalized facts about the call, filled in by the gateway.
+// Fields that don't apply to a tool are "".
+type ToolContext = {
+  tool: String,             // tool name
+  path: String,             // workspace-relative path, normalized ('..' rejected)
+  domain: String,           // host of fetch_url
+  recipient_domain: String, // domain of send_email recipient
+};
+
+action list_files, read_file, write_file, delete_file, fetch_url, send_email
+  appliesTo {
+    principal: [Agent],
+    resource: [Tool],
+    context: ToolContext,
+  };

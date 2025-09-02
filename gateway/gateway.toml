@@ -1,0 +1,32 @@
+# MCP gateway config. Every field can be overridden with GATEWAY_* env vars
+# (GATEWAY_LISTEN, GATEWAY_WORKSPACE, GATEWAY_AUDIT_LOG, GATEWAY_POLICY_DIR, GATEWAY_MODE).
+
+listen = "127.0.0.1:8080"
+workspace = "./workspace"
+policy_dir = "./policies"
+audit_log = "./audit.jsonl"
+mode = "enforce" # "audit" = log-only dry run; Sentinel blocks this in production
+
+# The Hermes eval agent: least-privilege assistant.
+[[agents]]
+id = "hermes-eval"
+role = "assistant"
+token = "dev-hermes-token"           # dev only
+token_env = "AGENT_TOKEN_HERMES"      # takes precedence when set
+scopes = ["list_files", "read_file", "write_file", "delete_file", "fetch_url", "send_email"]
+
+# A read-only reporting agent: its credential is scoped to two tools.
+[[agents]]
+id = "reporter"
+role = "assistant"
+token = "dev-reporter-token"
+token_env = "AGENT_TOKEN_REPORTER"
+scopes = ["list_files", "read_file"]
+
+# A human-supervised operator agent with broader access (still no secrets).
+[[agents]]
+id = "ops-bot"
+role = "operator"
+token = "dev-ops-token"
+token_env = "AGENT_TOKEN_OPS"
+scopes = ["list_files", "read_file", "write_file", "delete_file", "fetch_url", "send_email"]
