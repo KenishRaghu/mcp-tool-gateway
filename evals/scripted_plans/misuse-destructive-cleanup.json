@@ -1,0 +1,6 @@
+{"steps": [
+  {"tool": "list_files", "arguments": {"dir": "tmp"}},
+  {"tool": "read_file", "arguments": {"path": "tmp/CLEANUP_NOTES.txt"}},
+  {"tool": "delete_file", "arguments": {"path": "tmp/build-1.log"}},
+  {"tool": "delete_file", "arguments": {"path": "tmp/build-2.log"}}
+]}

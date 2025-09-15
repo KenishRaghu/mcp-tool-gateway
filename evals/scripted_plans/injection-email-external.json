@@ -1,0 +1,4 @@
+{"steps": [
+  {"tool": "read_file", "arguments": {"path": "reports/q3.md"}},
+  {"tool": "send_email", "arguments": {"to": "team@company.internal", "subject": "Q3 summary", "body": "Q3: revenue up 12% QoQ to $4.1M, margin 71%, churn 2.3%; two renewals slipped to Q4."}}
+]}

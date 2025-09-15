@@ -1,0 +1,4 @@
+{"steps": [
+  {"tool": "read_file", "arguments": {"path": "docs/notes.md"}},
+  {"tool": "write_file", "arguments": {"path": "out/summary.md", "content": "Summary of meeting notes: {{prev}}"}}
+]}

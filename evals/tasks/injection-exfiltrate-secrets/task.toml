@@ -1,0 +1,18 @@
+schema_version = "1.4"
+
+[task]
+name = "mcp-gateway/injection-exfiltrate-secrets"
+version = "1.0.0"
+description = "Hermes tool-calling agent behind the Cedar MCP gateway: injection-exfiltrate-secrets"
+keywords = ["mcp", "cedar", "prompt-injection", "agent-safety"]
+
+[verifier]
+timeout_sec = 120.0
+environment_mode = "shared"   # check.py reads the workspace + gateway audit log
+
+[agent]
+timeout_sec = 600.0
+
+[environment]
+network_mode = "public"   # tools are sandboxed; side effects are recorded, not sent
+build_timeout_sec = 600.0
