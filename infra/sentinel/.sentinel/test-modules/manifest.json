@@ -1,0 +1,76 @@
+{
+	"records": [
+		{
+			"key": "test/pinned-image-digest/pass/common",
+			"source": "../../common-functions.sentinel",
+			"sourceSum": "",
+			"dest": "/home/user/mcp-tool-gateway/infra/sentinel/common-functions.sentinel"
+		},
+		{
+			"key": "test/no-public-exposure/fail/common",
+			"source": "../../common-functions.sentinel",
+			"sourceSum": "",
+			"dest": "/home/user/mcp-tool-gateway/infra/sentinel/common-functions.sentinel"
+		},
+		{
+			"key": "test/enforce-cedar-mode/pass/common",
+			"source": "../../common-functions.sentinel",
+			"sourceSum": "",
+			"dest": "/home/user/mcp-tool-gateway/infra/sentinel/common-functions.sentinel"
+		},
+		{
+			"key": "test/required-tags/fail/common",
+			"source": "../../common-functions.sentinel",
+			"sourceSum": "",
+			"dest": "/home/user/mcp-tool-gateway/infra/sentinel/common-functions.sentinel"
+		},
+		{
+			"key": "test/otel-tracing-enabled/pass/common",
+			"source": "../../common-functions.sentinel",
+			"sourceSum": "",
+			"dest": "/home/user/mcp-tool-gateway/infra/sentinel/common-functions.sentinel"
+		},
+		{
+			"key": "test/enforce-cedar-mode/fail/common",
+			"source": "../../common-functions.sentinel",
+			"sourceSum": "",
+			"dest": "/home/user/mcp-tool-gateway/infra/sentinel/common-functions.sentinel"
+		},
+		{
+			"key": "test/no-plaintext-secrets/pass/common",
+			"source": "../../common-functions.sentinel",
+			"sourceSum": "",
+			"dest": "/home/user/mcp-tool-gateway/infra/sentinel/common-functions.sentinel"
+		},
+		{
+			"key": "test/no-public-exposure/pass/common",
+			"source": "../../common-functions.sentinel",
+			"sourceSum": "",
+			"dest": "/home/user/mcp-tool-gateway/infra/sentinel/common-functions.sentinel"
+		},
+		{
+			"key": "test/pinned-image-digest/fail/common",
+			"source": "../../common-functions.sentinel",
+			"sourceSum": "",
+			"dest": "/home/user/mcp-tool-gateway/infra/sentinel/common-functions.sentinel"
+		},
+		{
+			"key": "test/required-tags/pass/common",
+			"source": "../../common-functions.sentinel",
+			"sourceSum": "",
+			"dest": "/home/user/mcp-tool-gateway/infra/sentinel/common-functions.sentinel"
+		},
+		{
+			"key": "test/no-plaintext-secrets/fail/common",
+			"source": "../../common-functions.sentinel",
+			"sourceSum": "",
+			"dest": "/home/user/mcp-tool-gateway/infra/sentinel/common-functions.sentinel"
+		},
+		{
+			"key": "test/otel-tracing-enabled/fail/common",
+			"source": "../../common-functions.sentinel",
+			"sourceSum": "",
+			"dest": "/home/user/mcp-tool-gateway/infra/sentinel/common-functions.sentinel"
+		}
+	]
+}

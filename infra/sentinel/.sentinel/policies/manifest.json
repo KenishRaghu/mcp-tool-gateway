@@ -1,0 +1,40 @@
+{
+	"records": [
+		{
+			"key": "otel-tracing-enabled",
+			"source": "./otel-tracing-enabled.sentinel",
+			"sourceSum": "",
+			"dest": "/home/user/mcp-tool-gateway/infra/sentinel/otel-tracing-enabled.sentinel"
+		},
+		{
+			"key": "enforce-cedar-mode",
+			"source": "./enforce-cedar-mode.sentinel",
+			"sourceSum": "",
+			"dest": "/home/user/mcp-tool-gateway/infra/sentinel/enforce-cedar-mode.sentinel"
+		},
+		{
+			"key": "pinned-image-digest",
+			"source": "./pinned-image-digest.sentinel",
+			"sourceSum": "",
+			"dest": "/home/user/mcp-tool-gateway/infra/sentinel/pinned-image-digest.sentinel"
+		},
+		{
+			"key": "no-public-exposure",
+			"source": "./no-public-exposure.sentinel",
+			"sourceSum": "",
+			"dest": "/home/user/mcp-tool-gateway/infra/sentinel/no-public-exposure.sentinel"
+		},
+		{
+			"key": "no-plaintext-secrets",
+			"source": "./no-plaintext-secrets.sentinel",
+			"sourceSum": "",
+			"dest": "/home/user/mcp-tool-gateway/infra/sentinel/no-plaintext-secrets.sentinel"
+		},
+		{
+			"key": "required-tags",
+			"source": "./required-tags.sentinel",
+			"sourceSum": "",
+			"dest": "/home/user/mcp-tool-gateway/infra/sentinel/required-tags.sentinel"
+		}
+	]
+}

@@ -1,0 +1,13 @@
+# Gateway decisions should be traced (OpenTelemetry) so incidents can be investigated.
+import "common"
+
+violations = []
+for common.containers() as addr, cs {
+  for cs as c {
+    if c.name is "mcp-gateway" and (common.env_map(c)["OTEL_EXPORTER_OTLP_ENDPOINT"] else "") is "" {
+      append(violations, addr + ": OTEL_EXPORTER_OTLP_ENDPOINT is empty, gateway traces will be lost")
+    }
+  }
+}
+
+main = rule { common.report("otel-tracing-enabled", violations) }

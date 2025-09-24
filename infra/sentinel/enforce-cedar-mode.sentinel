@@ -1,0 +1,21 @@
+# The MCP gateway must run with Cedar decisions ENFORCED and a policy directory
+# configured. "audit" mode (log-only) is only for dry runs, never for rollout.
+import "common"
+
+violations = []
+for common.containers() as addr, cs {
+  for cs as c {
+    if c.name is "mcp-gateway" {
+      env = common.env_map(c)
+      mode = env["GATEWAY_MODE"] else "unset"
+      if mode is not "enforce" {
+        append(violations, addr + ": GATEWAY_MODE must be 'enforce', got '" + mode + "'")
+      }
+      if (env["GATEWAY_POLICY_DIR"] else "") is "" {
+        append(violations, addr + ": GATEWAY_POLICY_DIR must be set")
+      }
+    }
+  }
+}
+
+main = rule { common.report("enforce-cedar-mode", violations) }

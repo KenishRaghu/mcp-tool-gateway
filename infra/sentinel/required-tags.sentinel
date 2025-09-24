@@ -1,0 +1,20 @@
+# Ownership and data-classification tags on every taggable resource.
+import "common"
+
+required = ["owner", "environment", "data-classification"]
+taggable = ["aws_ecs_cluster", "aws_ecs_service", "aws_ecs_task_definition",
+            "aws_security_group", "aws_iam_role", "aws_cloudwatch_log_group"]
+
+violations = []
+for taggable as type {
+  for common.changes(type) as addr, rc {
+    tags = rc.change.after.tags else {}
+    for required as t {
+      if (tags[t] else "") is "" {
+        append(violations, addr + ": missing or empty tag '" + t + "'")
+      }
+    }
+  }
+}
+
+main = rule { common.report("required-tags", violations) }

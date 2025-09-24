@@ -1,0 +1,10 @@
+{
+	"records": [
+		{
+			"key": "common",
+			"source": "./common-functions.sentinel",
+			"sourceSum": "",
+			"dest": "/home/user/mcp-tool-gateway/infra/sentinel/common-functions.sentinel"
+		}
+	]
+}

@@ -1,0 +1,25 @@
+# The gateway brokers agent tool access: it must never be reachable from the internet.
+import "common"
+
+open_cidrs = ["0.0.0.0/0", "::/0"]
+violations = []
+
+for common.changes("aws_security_group") as addr, rc {
+  for (rc.change.after.ingress else []) as rule_ {
+    for (rule_.cidr_blocks else []) + (rule_.ipv6_cidr_blocks else []) as cidr {
+      if cidr in open_cidrs {
+        append(violations, addr + ": ingress open to " + cidr)
+      }
+    }
+  }
+}
+
+for common.changes("aws_ecs_service") as addr, rc {
+  for (rc.change.after.network_configuration else []) as nc {
+    if nc.assign_public_ip is true {
+      append(violations, addr + ": assign_public_ip must be false")
+    }
+  }
+}
+
+main = rule { common.report("no-public-exposure", violations) }

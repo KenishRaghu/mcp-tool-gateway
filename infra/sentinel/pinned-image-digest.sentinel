@@ -1,0 +1,13 @@
+# Images must be pinned by digest so the exact reviewed build is what ships.
+import "common"
+
+violations = []
+for common.containers() as addr, cs {
+  for cs as c {
+    if c.image not matches "@sha256:[a-f0-9]{64}$" {
+      append(violations, addr + ": image '" + c.image + "' is not pinned by @sha256 digest")
+    }
+  }
+}
+
+main = rule { common.report("pinned-image-digest", violations) }
