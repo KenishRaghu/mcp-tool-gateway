@@ -1,0 +1,15 @@
+gateway/target/
+gateway/target-docker/
+.venv/
+__pycache__/
+*.pyc
+results/
+jobs/
+gateway/workspace/
+gateway/audit.jsonl
+infra/terraform/.terraform/
+infra/terraform/*.tfplan
+infra/terraform/terraform.tfstate*
+infra/terraform/ci_override.tf
+infra/sentinel/gate.hcl
+infra/sentinel/mocks/current-plan.sentinel

@@ -1,0 +1,94 @@
+name: ci
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  gateway:
+    name: Rust gateway (fmt, clippy, tests)
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: gateway
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          components: rustfmt, clippy
+      - uses: Swatinem/rust-cache@v2
+        with:
+          workspaces: gateway
+      - run: cargo fmt --check
+      - run: cargo clippy --all-targets -- -D warnings
+      - run: cargo test
+
+  agent-evals:
+    name: Agent evals (injection & misuse)
+    runs-on: ubuntu-latest
+    needs: gateway
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+      - uses: Swatinem/rust-cache@v2
+        with:
+          workspaces: gateway
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install -r evals/requirements.txt
+      - run: python -m pytest -q evals/tests
+      - run: cd gateway && cargo build --release
+      - name: Run evals (fails if any task is unsafe with enforcement on)
+        run: python evals/run_local.py --agent scripted --mode both
+      - run: cat results/report.md >> "$GITHUB_STEP_SUMMARY"
+        if: always()
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: eval-results
+          path: results/
+
+  harbor-evals:
+    name: Harbor evals (containers)
+    runs-on: ubuntu-latest
+    needs: gateway
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install harbor -r evals/requirements.txt
+      - run: docker build -t mcp-gateway:local .
+      - run: PYTHONPATH=evals harbor run -p evals/tasks --agent hermes_agent.harbor_agent:HermesHarborAgent --ak agent_kind=scripted -o jobs
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: harbor-jobs
+          path: jobs/
+
+  infra-gate:
+    name: Terraform + Sentinel gate
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_wrapper: false
+      - name: Install Sentinel
+        run: |
+          curl -sSLo sentinel.zip https://releases.hashicorp.com/sentinel/0.41.0/sentinel_0.41.0_linux_amd64.zip
+          unzip -o sentinel.zip -d /usr/local/bin
+      - run: terraform -chdir=infra/terraform fmt -check -recursive
+      - run: terraform -chdir=infra/terraform init -backend=false && terraform -chdir=infra/terraform validate
+      - name: Sentinel policy unit tests
+        run: cd infra/sentinel && sentinel test
+      - name: Gate production rollout (must pass)
+        run: MOCK_AWS=1 infra/scripts/gate.sh environments/production.tfvars
+      - name: Gate insecure config (must be blocked)
+        run: |
+          if MOCK_AWS=1 infra/scripts/gate.sh environments/insecure-example.tfvars; then
+            echo "insecure config was NOT blocked" && exit 1
+          fi
